@@ -1,72 +1,26 @@
-class Solution {
-public:
-    bool isValidSudoku(vector<vector<char>>& board) 
+class Solution
 {
-        int z = 0;
-        while(z<9)
+public:
+    bool isValidSudoku(vector<vector<char>> &board)
     {
-             for (size_t i = 0; i < board.size(); ++i) 
+        vector<unordered_map<int, int>> rowMap(9), colMap(9), boxMap(9);
+        for (int i = 0; i < 9; i++)
         {
-            for (size_t j = i + 1; j < board.size(); ++j) 
+            for (int j = 0; j < 9; j++)
             {
-                if(board[i][z] == '.' || board[j][z] == '.' )
+                if (board[i][j] == '.')
                 {
                     continue;
                 }
-                if (board[i][z] == board[j][z]) return false;
-            }
-        
-        }
-        z++;
-        
-    }
+                int num = board[i][j] - '0';
+                int box_no = (i / 3) * 3 + (j / 3);
 
-    z = 0;
-       while(z<9)
-    {
-             for (size_t i = 0; i < board.size(); ++i) 
-        {
-            for (size_t j = i + 1; j < board.size(); ++j) 
-            {
-                if(board[z][i] == '.' || board[z][j] == '.')
+                if (++rowMap[i][num] > 1 || ++colMap[j][num] > 1 || ++boxMap[box_no][num] > 1)
                 {
-                    continue;
-                }
-                if (board[z][i] == board[z][j]) return false;
-            }
-        
-        }
-        z++;
-        
-    }
-    
-
-      for (int boxRow = 0; boxRow < 3; boxRow++) {
-            for (int boxCol = 0; boxCol < 3; boxCol++) {
-                int nums[9] = {0};
-                
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        char num = board[boxRow * 3 + i][boxCol * 3 + j];
-                        if (num == '.') continue;
-
-                        int index = num - '1';
-                        if (nums[index] == 1) return false;
-                        nums[index] = 1;
-                    }
+                    return false;
                 }
             }
         }
-
-
-
         return true;
-
-}
-
-    
-
-
-
-
+    }
 };
